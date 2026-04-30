@@ -1,6 +1,6 @@
-# auto-infotech
+# Info-Tech AUTO-CLAIM
 
-Automate Infotech CloudHR expense claim submission with Microsoft login, Claim Template creation, and Add More Claims handling.
+Automate [Infotech CloudHR](https://login-infotech.com/) expense claim submission with Microsoft login, Claim Template creation, and Add More Claims handling.
 
 This project provides:
 
