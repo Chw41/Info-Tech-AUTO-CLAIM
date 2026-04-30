@@ -77,7 +77,9 @@ Windows filenames cannot contain `:` or `/`. Use Windows-safe formats such as:
 
 ## Quick Start
 ### macOS Command Line
+Mac users can double-click `MAC-Start.command`.
 
+If you prefer the command line:
 ```bash
 cd ~/Info-Tech-AUTO-CLAIM
 bash setup.sh
@@ -86,8 +88,7 @@ npm run auto-claim -- 202604
 ```
 
 ### Windows PowerShell
-
-Most users can double-click `WINDOWS-Start.cmd`.
+Windows users can double-click `WINDOWS-Start.cmd`.
 
 If you prefer the command line:
 
