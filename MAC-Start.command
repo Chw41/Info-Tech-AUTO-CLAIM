@@ -27,13 +27,13 @@ load_homebrew_path() {
 install_homebrew() {
   echo "Installing Homebrew..."
   if ! command -v curl >/dev/null 2>&1; then
-    show_dialog "找不到 curl，無法自動安裝 Homebrew。請先安裝 Homebrew 或 Node.js LTS 後再重新開啟。"
+    show_dialog "curl was not found, so Homebrew cannot be installed automatically. Please install Homebrew or Node.js LTS first, then open MAC-Start.command again."
     exit 1
   fi
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   load_homebrew_path
   if ! command -v brew >/dev/null 2>&1; then
-    show_dialog "Homebrew 已嘗試安裝，但目前視窗仍找不到 brew。請關閉後重新開啟 MAC-Start.command。"
+    show_dialog "Homebrew installation was attempted, but brew is still not available in this terminal window. Please close this window and open MAC-Start.command again."
     exit 1
   fi
 }
@@ -63,7 +63,7 @@ if ! command -v npm >/dev/null 2>&1; then
 fi
 
 if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
-  show_dialog "Node.js 已嘗試安裝，但目前視窗仍找不到 node/npm。請關閉後重新開啟 MAC-Start.command。"
+  show_dialog "Node.js installation was attempted, but node/npm is still not available in this terminal window. Please close this window and open MAC-Start.command again."
   exit 1
 fi
 
@@ -73,7 +73,7 @@ if [ "$NODE_MAJOR" -lt 18 ]; then
   install_node
   NODE_MAJOR="$(node -p "process.versions.node.split('.')[0]")"
   if [ "$NODE_MAJOR" -lt 18 ]; then
-    show_dialog "Node.js 仍低於 18。目前版本：$(node -v)。請關閉後重新開啟 MAC-Start.command。"
+    show_dialog "Node.js is still older than version 18. Current version: $(node -v). Please close this window and open MAC-Start.command again."
     exit 1
   fi
 fi
