@@ -1279,17 +1279,17 @@
         <div class="toggle-row">
           <label class="toggle">
             <input id="headful" type="checkbox" checked>
-            顯示瀏覽器
+            Show browser
           </label>
           <label class="toggle">
             <input id="forceLogin" type="checkbox">
-            重新登入
+            Force login
           </label>
         </div>
 
         <label class="toggle">
           <input id="dryRun" type="checkbox">
-          只解析檔案，不送出
+          Parse files only, do not submit
         </label>
 
         <div class="command-preview" id="commandPreview">node src/auto-claim-upload.js 202604 --live --headful --reuse-session</div>
@@ -1318,7 +1318,7 @@
       <div class="category-head">
         <div>
           <p class="category-kicker">README / CLAIM TYPE DIRECTORY</p>
-          <h2 class="category-title" id="categoryTitle">類別對照表</h2>
+          <h2 class="category-title" id="categoryTitle">Category Mapping Table</h2>
         </div>
         <div class="category-meta" aria-label="Category table metadata">
           <span class="format-sample">[token]MMDD-amount Remark #receipt.pdf</span>
@@ -1718,11 +1718,11 @@
 
     async function loadFolders() {
       if (!window.autoClaimListFolders) {
-        folder.innerHTML = '<option value="">請用「Start.command」開啟</option>';
+        folder.innerHTML = '<option value="">Open with Start.command</option>';
         setStatus("HTML_DIRECT_OPEN_BLOCKED", "warn");
         subline.textContent = "browser sandbox: execution bridge missing";
         submitButton.disabled = true;
-        appendLog("[warn] Browser 直接開 HTML 不能執行 npm，請點擊「Start.command」。", "warn");
+        appendLog("[warn] Opening this HTML directly in a browser cannot run npm. Please use Start.command.", "warn");
         return;
       }
 
