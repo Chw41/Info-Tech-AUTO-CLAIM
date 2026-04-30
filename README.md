@@ -76,42 +76,29 @@ Windows filenames cannot contain `:` or `/`. Use Windows-safe formats such as:
 ```
 
 ## Quick Start
-
-Install dependencies and Playwright Chromium:
+### macOS Command Line
 
 ```bash
+cd ~/Info-Tech-AUTO-CLAIM
 bash setup.sh
-```
-
-Create a local environment file if you want to store default runtime options:
-
-```bash
 cp .env.example .env
+npm run auto-claim -- 202604
 ```
 
-Common `.env` values:
+### Windows PowerShell
 
-```text
-MS_EMAIL=your_account@company.com
-MS_PASSWORD=your_password
-HEADFUL=true
-FORCE_LOGIN=false
-DRY_RUN=false
-CLAIMS_BASE_DIR=
-CLAIM_URL=https://v2.infotech-cloudhr.com.sg/ECLaim/ClaimApply.aspx
+Most users can double-click `WINDOWS-Start.cmd`.
+
+If you prefer the command line:
+
+```powershelle
+cd .\Info-Tech-AUTO-CLAIM
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+Copy-Item .\.env.example .\.env
+npm run auto-claim -- 202604
 ```
 
-Run a dry run first:
-
-```bash
-npm run auto-claim -- 202604 --dry-run
-```
-
-Review `artifacts/claim-run-preview.json`, then submit for real:
-
-```bash
-npm run auto-claim -- 202604 --live
-```
+If PowerShell reports `running scripts is disabled on this system`, use the bypass command above or launch through `WINDOWS-Start.cmd`.
 
 ## CLI Usage
 
@@ -254,34 +241,6 @@ Notes:
 - Taxi / Grab parking items should use `parkingcoupon` or `parkingcharges`.
 - `it` / `itrelated` maps to SOFTWARE by default. Use `hardware` for hardware claims.
 - If your tenant uses different CloudHR claim names, update `CLAIM_RULES` in `src/auto-claim-upload.js`.
-
-## macOS Command Line
-
-```bash
-cd ~/Downloads
-unzip auto-infotech-share.zip -d auto-infotech
-cd auto-infotech
-bash setup.sh
-cp .env.example .env
-npm run auto-claim -- 202604
-```
-
-## Windows PowerShell
-
-Most users can double-click `WINDOWS-Start.cmd`.
-
-If you prefer the command line:
-
-```powershell
-cd $HOME\Downloads
-Expand-Archive .\auto-infotech-share.zip -DestinationPath .\auto-infotech -Force
-cd .\auto-infotech
-powershell -ExecutionPolicy Bypass -File .\setup.ps1
-Copy-Item .\.env.example .\.env
-npm run auto-claim -- 202604
-```
-
-If PowerShell reports `running scripts is disabled on this system`, use the bypass command above or launch through `WINDOWS-Start.cmd`.
 
 ## Development Notes
 
