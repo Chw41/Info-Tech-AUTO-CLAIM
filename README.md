@@ -8,6 +8,13 @@ This project provides:
 - A local Chromium-based UI launcher for non-technical users.
 - Filename-based parsing for claim category, receipt date, amount, remarks, attachment, and optional receipt number.
 
+## One-Click Launchers
+
+For the local UI:
+
+- macOS: double-click `MAC-Start.command`.
+- Windows: double-click `WINDOWS-Start.cmd`.
+
 ## Open Source Notice
 
 Before publishing this repository, make sure you do not commit real company or personal data:
