@@ -1,0 +1,1849 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto Infotech Claim</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050807;
+      --panel: rgba(6, 14, 13, 0.96);
+      --panel-strong: #0b1717;
+      --field: #071211;
+      --line: rgba(42, 255, 154, 0.24);
+      --line-strong: rgba(42, 255, 154, 0.62);
+      --text: #d9fff0;
+      --muted: #84a69b;
+      --green: #2aff9a;
+      --cyan: #63f7ff;
+      --amber: #ffd166;
+      --danger: #ff5277;
+      --shadow: rgba(42, 255, 154, 0.10);
+      --glass: rgba(255, 255, 255, 0.045);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(42, 255, 154, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 247, 255, 0.025) 1px, transparent 1px),
+        radial-gradient(circle at 18% 12%, rgba(99, 247, 255, 0.12), transparent 32rem),
+        radial-gradient(circle at 76% 8%, rgba(42, 255, 154, 0.13), transparent 30rem),
+        linear-gradient(135deg, rgba(4, 12, 12, 0.98), rgba(2, 8, 7, 0.98)),
+        var(--bg);
+      background-size: 32px 32px, 32px 32px, auto, auto, auto, auto;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.035) 0,
+        rgba(255, 255, 255, 0.035) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: overlay;
+      opacity: 0.28;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      height: 100dvh;
+      min-height: 0;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(330px, 430px) minmax(0, 1fr);
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 18px 0;
+    }
+
+    .login-panel,
+    .terminal-panel {
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 28%),
+        linear-gradient(145deg, rgba(12, 26, 24, 0.98), rgba(3, 9, 8, 0.98));
+      box-shadow:
+        0 28px 78px rgba(0, 0, 0, 0.50),
+        0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+        0 0 38px var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .login-panel {
+      border-radius: 8px;
+      min-height: 0;
+      max-height: calc(100dvh - 36px);
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      padding: 24px;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .login-panel::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), var(--cyan), var(--amber));
+      opacity: 0.9;
+    }
+
+    .login-panel::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 7px;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(42, 255, 154, 0.10), transparent 24%),
+        linear-gradient(315deg, rgba(99, 247, 255, 0.08), transparent 22%);
+      opacity: 0.65;
+      z-index: -1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(132, 166, 155, 0.16);
+    }
+
+    .brand img {
+      width: clamp(150px, 54%, 210px);
+      height: auto;
+      image-rendering: auto;
+      filter: drop-shadow(0 0 12px rgba(42, 255, 154, 0.26));
+    }
+
+    .signal {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(42, 255, 154, 0.12), 0 0 18px rgba(42, 255, 154, 0.8);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: clamp(1.75rem, 4vw, 2.55rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+      color: var(--green);
+      text-shadow: 0 0 18px rgba(42, 255, 154, 0.32);
+    }
+
+    .subline {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      min-height: 1.2em;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 46px;
+      min-height: 46px;
+      border: 1px solid rgba(132, 166, 155, 0.38);
+      border-radius: 6px;
+      padding: 0 14px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+        var(--field);
+      color: var(--text);
+      outline: none;
+      font: 600 0.98rem Inter, ui-sans-serif, system-ui, sans-serif;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(42, 255, 154, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
+        #081513;
+    }
+
+    select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--green) 50%),
+        linear-gradient(135deg, var(--green) 50%, transparent 50%);
+      background-position:
+        calc(100% - 19px) 21px,
+        calc(100% - 13px) 21px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .toggle {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(132, 166, 155, 0.28);
+      border-radius: 6px;
+      padding: 12px;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+        rgba(4, 11, 10, 0.7);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: none;
+    }
+
+    .toggle input {
+      width: 18px;
+      min-height: 18px;
+      height: 18px;
+      accent-color: var(--green);
+      flex: 0 0 auto;
+    }
+
+    .command-preview {
+      min-height: 44px;
+      max-height: 72px;
+      overflow: auto;
+      overflow-wrap: anywhere;
+      border: 1px solid rgba(99, 247, 255, 0.24);
+      border-radius: 6px;
+      padding: 12px;
+      color: var(--cyan);
+      background:
+        linear-gradient(90deg, rgba(99, 247, 255, 0.055), transparent 58%),
+        rgba(5, 12, 14, 0.86);
+      font: 0.82rem/1.45 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      min-height: 48px;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #03100b;
+      background: linear-gradient(135deg, #2aff9a, #63f7ff);
+      padding: 0 18px;
+      font: 900 0.95rem Inter, ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: 0;
+      box-shadow: 0 12px 28px rgba(42, 255, 154, 0.20);
+      transition: transform 0.14s ease, opacity 0.14s ease, background 0.14s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #6dffbd, #8ffbff);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+      transform: none;
+    }
+
+    .ghost {
+      color: var(--danger);
+      border: 1px solid rgba(255, 82, 119, 0.45);
+      background: rgba(255, 82, 119, 0.075);
+      box-shadow: none;
+    }
+
+    .ghost:hover {
+      color: #1b050a;
+      background: var(--danger);
+    }
+
+    .status {
+      min-height: 1.2em;
+      color: var(--amber);
+      font: 0.82rem/1.4 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      padding-top: 2px;
+    }
+
+    .terminal-panel {
+      height: calc(100dvh - 36px);
+      min-height: 0;
+      border-radius: 8px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+
+    .terminal-top {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      padding: 0 16px;
+      background:
+        linear-gradient(90deg, rgba(42, 255, 154, 0.055), transparent 56%),
+        var(--panel-strong);
+    }
+
+    .terminal-title {
+      color: var(--green);
+      font: 800 0.86rem "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .meters {
+      display: flex;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .meters span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+      background: var(--muted);
+    }
+
+    .meters span:nth-child(1) {
+      background: var(--danger);
+    }
+
+    .meters span:nth-child(2) {
+      background: var(--amber);
+    }
+
+    .meters span:nth-child(3) {
+      background: var(--green);
+    }
+
+    #log {
+      margin: 0;
+      padding: 18px;
+      overflow: auto;
+      min-height: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-anchor: none;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      contain: content;
+      color: #b8ffe2;
+      font: 0.86rem/1.55 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      background:
+        linear-gradient(rgba(42, 255, 154, 0.018) 50%, transparent 50%),
+        radial-gradient(circle at 20% 0, rgba(99, 247, 255, 0.055), transparent 22rem),
+        #030706;
+      background-size: 100% 2.8rem;
+    }
+
+    .ok {
+      color: var(--green);
+    }
+
+    .err {
+      color: var(--danger);
+    }
+
+    .warn {
+      color: var(--amber);
+    }
+
+    @media (max-width: 860px) {
+      body {
+        overflow: auto;
+      }
+
+      main {
+        height: auto;
+        min-height: 100dvh;
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .login-panel {
+        max-height: none;
+      }
+
+      .terminal-panel {
+        height: 460px;
+      }
+    }
+
+    @media (max-height: 560px) and (min-width: 861px) {
+      body {
+        overflow: auto;
+      }
+
+      main {
+        height: auto;
+        min-height: 100dvh;
+        align-items: start;
+        align-content: start;
+      }
+
+      .login-panel {
+        max-height: none;
+      }
+
+      .terminal-panel {
+        height: max(520px, calc(100dvh - 36px));
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        width: min(100% - 20px, 1180px);
+        padding: 14px 0;
+      }
+
+      .login-panel {
+        padding: 20px;
+      }
+
+      .toggle-row,
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+    }
+
+    :root {
+      --bg: #050707;
+      --panel: rgba(10, 15, 15, 0.82);
+      --panel-strong: rgba(13, 20, 20, 0.92);
+      --field: rgba(5, 10, 10, 0.76);
+      --line: rgba(210, 255, 236, 0.12);
+      --line-strong: rgba(55, 255, 160, 0.52);
+      --text: #eefbf6;
+      --muted: #8fa19b;
+      --green: #30ff9d;
+      --cyan: #72f6ff;
+      --amber: #f4c56a;
+      --danger: #ff5e7e;
+      --shadow: rgba(0, 0, 0, 0.52);
+      --glass: rgba(255, 255, 255, 0.055);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 18% 14%, rgba(114, 246, 255, 0.12), transparent 28rem),
+        radial-gradient(circle at 78% 10%, rgba(48, 255, 157, 0.10), transparent 30rem),
+        linear-gradient(145deg, #07100f 0%, #030505 58%, #07100f 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    body::before {
+      background:
+        linear-gradient(rgba(48, 255, 157, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114, 246, 255, 0.018) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity: 0.72;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      mix-blend-mode: normal;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.045), transparent 16%),
+        radial-gradient(circle at center, transparent 42%, rgba(0, 0, 0, 0.48));
+    }
+
+    main {
+      width: min(1168px, calc(100% - 48px));
+      grid-template-columns: minmax(330px, 408px) minmax(0, 1fr);
+      gap: 24px;
+      padding: 24px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-panel,
+    .terminal-panel {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.075), transparent 22%),
+        linear-gradient(140deg, rgba(20, 30, 30, 0.88), rgba(4, 8, 8, 0.90));
+      box-shadow:
+        0 34px 90px var(--shadow),
+        0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+        0 1px 0 rgba(255, 255, 255, 0.10) inset;
+      backdrop-filter: blur(22px) saturate(1.2);
+    }
+
+    .login-panel {
+      max-height: calc(100dvh - 48px);
+      padding: 30px;
+    }
+
+    .login-panel::after {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(48, 255, 157, 0.72), rgba(114, 246, 255, 0.52), transparent);
+    }
+
+    .login-panel::before {
+      background:
+        radial-gradient(circle at 86% 10%, rgba(48, 255, 157, 0.14), transparent 8rem),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 34%);
+      opacity: 1;
+    }
+
+    .brand {
+      margin-bottom: 28px;
+      padding-bottom: 22px;
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .brand img {
+      width: clamp(158px, 52%, 198px);
+      filter: drop-shadow(0 16px 34px rgba(0, 0, 0, 0.42));
+    }
+
+    .signal {
+      width: 9px;
+      height: 9px;
+      background: var(--green);
+      box-shadow:
+        0 0 0 5px rgba(48, 255, 157, 0.10),
+        0 0 24px rgba(48, 255, 157, 0.95);
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(2.2rem, 4.4vw, 3.25rem);
+      font-weight: 800;
+      line-height: 0.96;
+      color: #f4fff9;
+      text-shadow: none;
+    }
+
+    .subline {
+      margin-bottom: 28px;
+      color: rgba(143, 161, 155, 0.92);
+      font-size: 0.78rem;
+    }
+
+    form {
+      gap: 16px;
+    }
+
+    label {
+      gap: 9px;
+      color: rgba(196, 220, 211, 0.70);
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+
+    input,
+    select {
+      height: 50px;
+      min-height: 50px;
+      border-color: rgba(210, 255, 236, 0.13);
+      border-radius: 8px;
+      padding: 0 15px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.014)),
+        var(--field);
+      color: #f3fff9;
+      font-size: 1rem;
+      font-weight: 650;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.05) inset,
+        0 14px 30px rgba(0, 0, 0, 0.16);
+    }
+
+    input::placeholder {
+      color: rgba(238, 251, 246, 0.34);
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(48, 255, 157, 0.58);
+      box-shadow:
+        0 0 0 4px rgba(48, 255, 157, 0.10),
+        0 18px 32px rgba(0, 0, 0, 0.22);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
+        rgba(7, 18, 17, 0.90);
+    }
+
+    select {
+      background-position:
+        calc(100% - 20px) 23px,
+        calc(100% - 14px) 23px;
+    }
+
+    .toggle-row {
+      gap: 10px;
+    }
+
+    .toggle {
+      min-height: 48px;
+      border-color: rgba(210, 255, 236, 0.12);
+      border-radius: 8px;
+      padding: 12px 13px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.050), rgba(255, 255, 255, 0.012)),
+        rgba(4, 10, 10, 0.62);
+      color: rgba(238, 251, 246, 0.90);
+      font-size: 0.88rem;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    }
+
+    .toggle input {
+      width: 17px;
+      min-height: 17px;
+      height: 17px;
+    }
+
+    .command-preview {
+      min-height: 48px;
+      max-height: 78px;
+      border-color: rgba(114, 246, 255, 0.18);
+      border-radius: 8px;
+      padding: 12px 13px;
+      color: rgba(114, 246, 255, 0.88);
+      background:
+        linear-gradient(90deg, rgba(114, 246, 255, 0.065), transparent 52%),
+        rgba(1, 6, 7, 0.72);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.035) inset;
+    }
+
+    .actions {
+      grid-template-columns: 1fr 104px;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    button {
+      min-height: 50px;
+      border-radius: 8px;
+      color: #04110c;
+      background: linear-gradient(135deg, #32ff9f 0%, #77f7ff 100%);
+      box-shadow:
+        0 16px 34px rgba(48, 255, 157, 0.22),
+        0 1px 0 rgba(255, 255, 255, 0.44) inset;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #75ffbf 0%, #a0fbff 100%);
+    }
+
+    .ghost {
+      color: rgba(255, 118, 145, 0.78);
+      border-color: rgba(255, 94, 126, 0.22);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.032), transparent),
+        rgba(255, 94, 126, 0.052);
+    }
+
+    .status {
+      color: rgba(48, 255, 157, 0.95);
+      font-size: 0.78rem;
+    }
+
+    .terminal-panel {
+      height: calc(100dvh - 48px);
+    }
+
+    .terminal-top {
+      min-height: 56px;
+      border-bottom-color: rgba(210, 255, 236, 0.11);
+      background:
+        linear-gradient(90deg, rgba(48, 255, 157, 0.06), rgba(114, 246, 255, 0.028), transparent 62%),
+        rgba(9, 16, 16, 0.94);
+    }
+
+    .terminal-title {
+      color: rgba(48, 255, 157, 0.95);
+      font-size: 0.82rem;
+    }
+
+    .meters span {
+      width: 9px;
+      height: 9px;
+      opacity: 0.95;
+    }
+
+    #log {
+      padding: 20px;
+      color: rgba(204, 255, 231, 0.92);
+      font-size: 0.84rem;
+      line-height: 1.62;
+      background:
+        linear-gradient(rgba(48, 255, 157, 0.020) 50%, transparent 50%),
+        radial-gradient(circle at 22% 0, rgba(114, 246, 255, 0.060), transparent 24rem),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 28%),
+        #020505;
+      background-size: 100% 3rem, auto, auto, auto;
+    }
+
+    .result-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 50% 24%, rgba(48, 255, 157, 0.12), transparent 30rem),
+        rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(24px) saturate(1.1);
+    }
+
+    .result-overlay[aria-hidden="false"] {
+      display: grid;
+    }
+
+    .result-dialog {
+      width: min(860px, 100%);
+      max-height: min(760px, calc(100dvh - 48px));
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      border: 1px solid rgba(210, 255, 236, 0.14);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.080), transparent 24%),
+        linear-gradient(145deg, rgba(17, 25, 25, 0.96), rgba(4, 7, 7, 0.98));
+      box-shadow:
+        0 36px 110px rgba(0, 0, 0, 0.64),
+        0 1px 0 rgba(255, 255, 255, 0.12) inset;
+    }
+
+    .result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid rgba(210, 255, 236, 0.10);
+    }
+
+    .result-kicker {
+      margin: 0 0 6px;
+      color: rgba(48, 255, 157, 0.88);
+      font: 0.76rem/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .result-title {
+      margin: 0;
+      color: #f4fff9;
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      line-height: 1.05;
+    }
+
+    .result-close {
+      width: 40px;
+      min-height: 40px;
+      padding: 0;
+      color: rgba(238, 251, 246, 0.82);
+      border: 1px solid rgba(210, 255, 236, 0.13);
+      background: rgba(255, 255, 255, 0.045);
+      box-shadow: none;
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .result-close:hover {
+      color: #04110c;
+      background: linear-gradient(135deg, #32ff9f, #77f7ff);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px 24px;
+    }
+
+    .result-stat {
+      min-height: 74px;
+      border: 1px solid rgba(210, 255, 236, 0.10);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .result-stat span {
+      display: block;
+      margin-bottom: 8px;
+      color: rgba(143, 161, 155, 0.92);
+      font-size: 0.72rem;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    .result-stat strong {
+      display: block;
+      color: #f3fff9;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font: 0.96rem/1.25 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .result-media {
+      min-height: 220px;
+      margin: 0 24px 18px;
+      overflow: auto;
+      border: 1px solid rgba(210, 255, 236, 0.11);
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(48, 255, 157, 0.018) 50%, transparent 50%),
+        #020505;
+      background-size: 100% 3rem;
+    }
+
+    .result-media img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .result-media img[hidden],
+    .result-empty[hidden] {
+      display: none;
+    }
+
+    .result-empty {
+      display: grid;
+      min-height: 220px;
+      place-items: center;
+      padding: 24px;
+      color: rgba(143, 161, 155, 0.92);
+      font: 0.86rem/1.5 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      text-align: center;
+    }
+
+    .result-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 24px 22px;
+    }
+
+    .result-actions button {
+      min-width: 132px;
+    }
+
+    .result-overlay.is-failed {
+      background:
+        radial-gradient(circle at 50% 24%, rgba(255, 72, 104, 0.22), transparent 28rem),
+        radial-gradient(circle at 12% 88%, rgba(255, 72, 104, 0.12), transparent 20rem),
+        rgba(0, 0, 0, 0.70);
+    }
+
+    .result-overlay.is-failed .result-dialog {
+      border-color: rgba(255, 72, 104, 0.48);
+      background:
+        linear-gradient(180deg, rgba(255, 72, 104, 0.14), transparent 24%),
+        linear-gradient(145deg, rgba(27, 17, 20, 0.97), rgba(7, 4, 5, 0.98));
+      box-shadow:
+        0 38px 120px rgba(0, 0, 0, 0.70),
+        0 0 0 1px rgba(255, 120, 145, 0.10) inset,
+        0 0 54px rgba(255, 72, 104, 0.16);
+    }
+
+    .result-overlay.is-failed .result-kicker {
+      color: #ff4f73;
+      text-shadow: 0 0 18px rgba(255, 72, 104, 0.45);
+    }
+
+    .result-overlay.is-failed .result-title {
+      color: #fff4f6;
+    }
+
+    .result-overlay.is-failed .result-stat {
+      border-color: rgba(255, 72, 104, 0.20);
+      background:
+        linear-gradient(180deg, rgba(255, 72, 104, 0.06), transparent),
+        rgba(255, 255, 255, 0.030);
+    }
+
+    .result-overlay.is-failed .result-media {
+      border-color: rgba(255, 72, 104, 0.24);
+      background:
+        linear-gradient(rgba(255, 72, 104, 0.024) 50%, transparent 50%),
+        radial-gradient(circle at 50% 0, rgba(255, 72, 104, 0.08), transparent 18rem),
+        #070304;
+      background-size: 100% 3rem, auto, auto;
+    }
+
+    .result-overlay.is-failed .result-empty {
+      color: rgba(255, 199, 210, 0.96);
+    }
+
+    .category-section {
+      width: min(1168px, calc(100% - 48px));
+      margin: 0 auto 52px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .category-panel {
+      overflow: hidden;
+      border: 1px solid rgba(210, 255, 236, 0.12);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.070), transparent 18%),
+        linear-gradient(140deg, rgba(18, 28, 28, 0.88), rgba(3, 7, 7, 0.92));
+      box-shadow:
+        0 34px 90px rgba(0, 0, 0, 0.52),
+        0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+        0 1px 0 rgba(255, 255, 255, 0.10) inset;
+      backdrop-filter: blur(22px) saturate(1.2);
+    }
+
+    .category-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: end;
+      padding: 26px 28px 20px;
+      border-bottom: 1px solid rgba(210, 255, 236, 0.10);
+      background:
+        linear-gradient(90deg, rgba(48, 255, 157, 0.055), rgba(114, 246, 255, 0.025), transparent 64%),
+        rgba(6, 12, 12, 0.62);
+    }
+
+    .category-kicker {
+      margin: 0 0 8px;
+      color: rgba(48, 255, 157, 0.88);
+      font: 0.76rem/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      text-transform: uppercase;
+    }
+
+    .category-title {
+      margin: 0;
+      color: #f4fff9;
+      font-size: clamp(1.45rem, 2.5vw, 2.1rem);
+      line-height: 1.02;
+    }
+
+    .category-meta {
+      justify-self: end;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 8px;
+      align-items: center;
+      color: rgba(238, 251, 246, 0.76);
+      font: 0.78rem/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .category-meta span {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      justify-self: end;
+      border: 1px solid rgba(210, 255, 236, 0.12);
+      border-radius: 999px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.040);
+      white-space: nowrap;
+    }
+
+    .category-meta .rule-count {
+      color: rgba(143, 161, 155, 0.86);
+    }
+
+    .category-meta .format-sample {
+      min-height: 42px;
+      border-color: rgba(114, 246, 255, 0.46);
+      padding: 0 15px;
+      color: #effffd;
+      background:
+        linear-gradient(90deg, rgba(114, 246, 255, 0.18), rgba(48, 255, 157, 0.070)),
+        rgba(2, 9, 10, 0.72);
+      font-size: 0.88rem;
+      font-weight: 800;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.050) inset,
+        0 14px 34px rgba(114, 246, 255, 0.12),
+        0 0 24px rgba(48, 255, 157, 0.075);
+    }
+
+    .category-table-wrap {
+      overflow: auto;
+      scrollbar-gutter: stable;
+      background:
+        linear-gradient(rgba(48, 255, 157, 0.016) 50%, transparent 50%),
+        radial-gradient(circle at 20% 0, rgba(114, 246, 255, 0.050), transparent 24rem),
+        #020505;
+      background-size: 100% 3.2rem, auto, auto;
+    }
+
+    .category-table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      color: rgba(238, 251, 246, 0.92);
+    }
+
+    .category-table th,
+    .category-table td {
+      border-bottom: 1px solid rgba(210, 255, 236, 0.08);
+      padding: 15px 18px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .category-table th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      color: rgba(48, 255, 157, 0.92);
+      background:
+        linear-gradient(180deg, rgba(15, 24, 24, 0.98), rgba(7, 13, 13, 0.98));
+      font: 0.72rem/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      text-transform: uppercase;
+    }
+
+    .category-table tbody tr {
+      transition: background 0.16s ease;
+    }
+
+    .category-table tbody tr:hover {
+      background: rgba(48, 255, 157, 0.040);
+    }
+
+    .category-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .category-table td:nth-child(1) {
+      width: 42%;
+    }
+
+    .category-table td:nth-child(2),
+    .category-table td:nth-child(3) {
+      width: 29%;
+      color: rgba(238, 251, 246, 0.86);
+      font-weight: 650;
+    }
+
+    .token-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .token-list code {
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      border: 1px solid rgba(114, 246, 255, 0.18);
+      border-radius: 999px;
+      padding: 0 9px;
+      color: rgba(114, 246, 255, 0.92);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.050), rgba(255, 255, 255, 0.012)),
+        rgba(2, 9, 10, 0.74);
+      font: 0.76rem/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    }
+
+    .category-notes {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 18px 28px 24px;
+      border-top: 1px solid rgba(210, 255, 236, 0.10);
+      color: rgba(143, 161, 155, 0.96);
+      font: 0.82rem/1.55 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    .category-notes p {
+      margin: 0;
+    }
+
+    .category-notes code {
+      color: rgba(114, 246, 255, 0.92);
+      font: inherit;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        overflow: auto;
+      }
+
+      main {
+        width: min(100% - 28px, 1168px);
+        height: auto;
+        min-height: 100dvh;
+        grid-template-columns: 1fr;
+        align-items: start;
+        align-content: start;
+        gap: 18px;
+        padding: 18px 0;
+      }
+
+      .login-panel {
+        max-height: none;
+        padding: 24px 20px;
+      }
+
+      .terminal-panel {
+        height: 500px;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .category-section {
+        width: min(100% - 28px, 1168px);
+        margin-bottom: 32px;
+      }
+
+      .category-head {
+        grid-template-columns: 1fr;
+        padding: 22px 20px 18px;
+      }
+
+      .category-meta {
+        justify-self: start;
+        grid-template-columns: 1fr;
+      }
+
+      .category-meta span {
+        justify-self: start;
+      }
+
+      .category-notes {
+        padding: 16px 20px 20px;
+      }
+    }
+
+    @media (max-height: 560px) and (min-width: 861px) {
+      .terminal-panel {
+        height: max(520px, calc(100dvh - 48px));
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        width: min(100% - 20px, 1168px);
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .toggle-row {
+        grid-template-columns: 1fr;
+      }
+
+      .result-overlay {
+        padding: 12px;
+      }
+
+      .result-dialog {
+        max-height: calc(100dvh - 24px);
+      }
+
+      .result-head,
+      .result-grid,
+      .result-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-media {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+
+      .category-section {
+        width: min(100% - 20px, 1168px);
+      }
+
+      .category-title {
+        font-size: 1.55rem;
+      }
+
+      .category-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="login-panel" aria-label="Auto claim login">
+      <div class="brand">
+        <img src="src/logo.png" alt="Auto Infotech">
+        <span class="signal" aria-hidden="true"></span>
+      </div>
+      <h1>AUTO CLAIM</h1>
+      <p class="subline" id="subline">local://auto-claim</p>
+
+      <form id="claimForm" autocomplete="on">
+        <label>
+          Microsoft Email
+          <input id="email" name="email" type="email" autocomplete="username" placeholder="name@company.com" required>
+        </label>
+
+        <label>
+          Microsoft Password
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+        </label>
+
+        <label>
+          Claim Folder
+          <select id="folder" name="folder" required>
+            <option value="">Scanning...</option>
+          </select>
+        </label>
+
+        <div class="toggle-row">
+          <label class="toggle">
+            <input id="headful" type="checkbox" checked>
+            顯示瀏覽器
+          </label>
+          <label class="toggle">
+            <input id="forceLogin" type="checkbox">
+            重新登入
+          </label>
+        </div>
+
+        <label class="toggle">
+          <input id="dryRun" type="checkbox">
+          只解析檔案，不送出
+        </label>
+
+        <div class="command-preview" id="commandPreview">node src/auto-claim-upload.js 202604 --live --headful --reuse-session</div>
+
+        <div class="actions">
+          <button id="submitButton" type="submit">EXECUTE CLAIM</button>
+          <button id="cancelButton" class="ghost" type="button" disabled>CANCEL</button>
+        </div>
+
+        <div class="status" id="status">READY</div>
+      </form>
+    </section>
+
+    <section class="terminal-panel" aria-label="Run log">
+      <div class="terminal-top">
+        <div class="terminal-title">/artifacts/claim-run</div>
+        <div class="meters" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+      <pre id="log">[system] waiting for credentials and folder selection
+</pre>
+    </section>
+  </main>
+
+  <section class="category-section" aria-labelledby="categoryTitle">
+    <div class="category-panel">
+      <div class="category-head">
+        <div>
+          <p class="category-kicker">README / CLAIM TYPE DIRECTORY</p>
+          <h2 class="category-title" id="categoryTitle">類別對照表</h2>
+        </div>
+        <div class="category-meta" aria-label="Category table metadata">
+          <span class="format-sample">[token]MMDD-amount Remark #receipt.pdf</span>
+          <span class="rule-count">37 rules</span>
+        </div>
+      </div>
+
+      <div class="category-table-wrap" tabindex="0" aria-label="Claim category table">
+        <table class="category-table">
+          <thead>
+            <tr>
+              <th scope="col">Filename tokens</th>
+              <th scope="col">Claim Group Name</th>
+              <th scope="col">Claim Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="token-list"><code>mob</code><code>mobile</code><code>phone</code></span></td>
+              <td>MOBILE PHONE REIMBURSEMENT</td>
+              <td>MOBILE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>clothing</code><code>cloth</code><code>allowance</code><code>cloalw</code></span></td>
+              <td>CLOTHING ALLOWANCE</td>
+              <td>CLOTHIN</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>health</code><code>medical</code><code>screening</code><code>emphs</code></span></td>
+              <td>HEALTH SCREENING</td>
+              <td>HEALTH SCREENING</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>hardware</code><code>hw</code><code>hardwa</code></span></td>
+              <td>IT RELATED</td>
+              <td>HARDWARE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>software</code><code>sw</code><code>softwa</code><code>it</code><code>itrelated</code></span></td>
+              <td>IT RELATED</td>
+              <td>SOFTWARE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>mileage</code><code>miles</code><code>mile</code><code>car</code></span></td>
+              <td>MILEAGE CLAIM</td>
+              <td>CAR</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>motorcycle</code><code>motorbike</code><code>bike</code><code>mcycle</code></span></td>
+              <td>MILEAGE CLAIM</td>
+              <td>MOTOR CYCLE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>courier</code><code>dispatch</code><code>couriedispatch</code></span></td>
+              <td>MISCELLANEOUS CLAIM</td>
+              <td>COURIER / DISPATCH SERVICES</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>dinner</code><code>annualdinner</code></span></td>
+              <td>MISCELLANEOUS CLAIM</td>
+              <td>ANNUAL DINNER</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>lunch</code><code>fridaylunch</code></span></td>
+              <td>MISCELLANEOUS CLAIM</td>
+              <td>FRIDAY LUNCH</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>pantry</code><code>pantryitems</code></span></td>
+              <td>MISCELLANEOUS CLAIM</td>
+              <td>PANTRY ITEMS</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>misc</code><code>miscellaneous</code><code>other</code><code>sundry</code></span></td>
+              <td>MISCELLANEOUS CLAIM</td>
+              <td>MISC - OTHER MISCELLANEOUS</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>marketing</code><code>mktg</code><code>ads</code><code>advertising</code></span></td>
+              <td>MARKETING COST</td>
+              <td>MARKETING COST</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>office</code><code>stationery</code><code>accessories</code></span></td>
+              <td>OFFICE ACCESSORIES</td>
+              <td>OFFICE ACCESSORIES</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>overseas</code><code>oversea</code><code>travelallowance</code><code>ota</code><code>ta</code></span></td>
+              <td>OVERSEAS TRAVEL ALLOWANCE</td>
+              <td>OVERSEAS TRAVEL ALLOWANCE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>airticket</code><code>air</code><code>flight</code><code>ticket</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>AIR TICKET</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>winterclothing</code><code>wintercloth</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>WINTER CLOTHING</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>data</code><code>sim</code><code>simcard</code><code>dataplan</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>SIM CARD, DATA PLAN</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>ent</code><code>entertainment</code><code>overseasentertainment</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>OVERSEAS ENTERTAINMENT</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>hotel</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>HOTEL</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>insure</code><code>insurance</code><code>travelins</code><code>travelinsurance</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>TRAVEL INSURANCE</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>laundry</code><code>laundr</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>LAUNDRY</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>meal</code><code>meals</code><code>overseasmeal</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>MEAL OVERSEAS</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>transport</code><code>overseastransport</code><code>trans</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>TRANSPORT</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>visa</code><code>visaapplication</code></span></td>
+              <td>OVERSEAS / BUSINESS TRAVEL CLAIM</td>
+              <td>VISA APPLICATION</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>parking</code><code>park</code></span></td>
+              <td>PARKING</td>
+              <td>PARKING</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>petrol</code><code>gasoline</code><code>fuel</code><code>gas</code></span></td>
+              <td>GASOLINE / PETROL</td>
+              <td>GASOLINE / PETROL</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>recruit</code><code>recruitment</code><code>hiring</code></span></td>
+              <td>RECRUITMENT COST</td>
+              <td>RECRUITMENT COST</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>training</code><code>course</code><code>seminar</code><code>workshop</code></span></td>
+              <td>TRAINING</td>
+              <td>TRAINING</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>bus</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>BUS</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>cashcard</code><code>cash</code><code>card</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>CASH CARD</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>erp</code><code>erpcharges</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>ERP CHARGES</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>parkingcoupon</code><code>parkcoupon</code><code>coupon</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>PARKING COUPON</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>parkingcharges</code><code>parkingcharge</code><code>parkcharge</code><code>parkcharges</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>PARKING CHARGES</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>taxi</code><code>grab</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>TAXI</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>train</code><code>mrt</code></span></td>
+              <td>TAXI / GRAB CLAIM</td>
+              <td>TRAIN</td>
+            </tr>
+            <tr>
+              <td><span class="token-list"><code>welfare</code><code>benefit</code></span></td>
+              <td>EMPLOYEE WELFARE</td>
+              <td>EMPLOYEE WELFARE</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="category-notes" aria-label="Category notes">
+        <p><code>parking</code> / <code>park</code> maps to the standalone PARKING group. Use <code>parkingcoupon</code> or <code>parkingcharges</code> for Taxi / Grab parking.</p>
+        <p><code>it</code> / <code>itrelated</code> defaults to SOFTWARE. Use <code>hardware</code> for hardware claims.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="result-overlay" id="resultOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+    <section class="result-dialog">
+      <div class="result-head">
+        <div>
+          <p class="result-kicker" id="resultKicker">RUN COMPLETE</p>
+          <h2 class="result-title" id="resultTitle">Claim submitted</h2>
+        </div>
+        <button class="result-close" id="resultClose" type="button" aria-label="Close result">×</button>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-stat"><span>Folder</span><strong id="resultFolder">-</strong></div>
+        <div class="result-stat"><span>Template</span><strong id="resultTemplate">-</strong></div>
+        <div class="result-stat"><span>Claims</span><strong id="resultCount">-</strong></div>
+        <div class="result-stat"><span>Exit Code</span><strong id="resultCode">-</strong></div>
+      </div>
+
+      <div class="result-media">
+        <img id="resultImage" alt="Claim submission final screenshot" hidden>
+        <div class="result-empty" id="resultEmpty">No final screenshot is available for this run.</div>
+      </div>
+
+      <div class="result-actions">
+        <button id="resultDone" type="button">DONE</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const form = $("claimForm");
+    const email = $("email");
+    const password = $("password");
+    const folder = $("folder");
+    const headful = $("headful");
+    const forceLogin = $("forceLogin");
+    const dryRun = $("dryRun");
+    const commandPreview = $("commandPreview");
+    const submitButton = $("submitButton");
+    const cancelButton = $("cancelButton");
+    const statusEl = $("status");
+    const logEl = $("log");
+    const subline = $("subline");
+    const resultOverlay = $("resultOverlay");
+    const resultClose = $("resultClose");
+    const resultDone = $("resultDone");
+    const resultKicker = $("resultKicker");
+    const resultTitle = $("resultTitle");
+    const resultFolder = $("resultFolder");
+    const resultTemplate = $("resultTemplate");
+    const resultCount = $("resultCount");
+    const resultCode = $("resultCode");
+    const resultImage = $("resultImage");
+    const resultEmpty = $("resultEmpty");
+
+    let running = false;
+    let logBuffer = "[system] waiting for credentials and folder selection\n";
+    let logFrame = 0;
+
+    function selectedFolder() {
+      return folder.value.trim();
+    }
+
+    function argsPreview() {
+      const target = selectedFolder() || "202604";
+      return [
+        "node src/auto-claim-upload.js",
+        shellToken(target),
+        dryRun.checked ? "--dry-run" : "--live",
+        headful.checked ? "--headful" : "--headless",
+        forceLogin.checked ? "--force-login" : "--reuse-session"
+      ].join(" ");
+    }
+
+    function shellToken(value) {
+      if (/^[A-Za-z0-9._/@:-]+$/.test(value)) return value;
+      return `"${value.replaceAll('"', '\\"')}"`;
+    }
+
+    function setStatus(text, tone = "") {
+      statusEl.textContent = text;
+      statusEl.className = `status ${tone}`.trim();
+    }
+
+    function appendLog(text, tone = "") {
+      const prefix = tone === "err" ? "[error] " : tone === "warn" ? "[warn] " : "";
+      logBuffer += `${prefix}${text.endsWith("\n") ? text : `${text}\n`}`;
+      if (logBuffer.length > 90000) {
+        logBuffer = `[system] log trimmed\n${logBuffer.slice(-70000)}`;
+      }
+      scheduleLogRender();
+    }
+
+    function resetLog(text = "") {
+      logBuffer = text;
+      scheduleLogRender(true);
+    }
+
+    function scheduleLogRender(immediate = false) {
+      if (immediate) {
+        if (logFrame) cancelAnimationFrame(logFrame);
+        logFrame = 0;
+        renderLog();
+        return;
+      }
+      if (logFrame) return;
+      logFrame = requestAnimationFrame(() => {
+        logFrame = 0;
+        renderLog();
+      });
+    }
+
+    function renderLog() {
+      logEl.textContent = logBuffer;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function showResultAlert(result, folderName) {
+      const artifacts = result.artifacts || {};
+      const runResult = artifacts.result || {};
+      const preview = artifacts.preview || {};
+      const error = artifacts.error || {};
+      const isDryRun = dryRun.checked;
+      const imageUrl = result.ok ? artifacts.finalImageUrl : artifacts.errorImageUrl;
+
+      resultOverlay.classList.toggle("is-failed", !result.ok);
+      resultKicker.textContent = result.ok ? "RUN COMPLETE" : "RUN FAILED";
+      resultTitle.textContent = result.ok
+        ? (isDryRun ? "Preview completed" : "Claim submitted")
+        : "Automation stopped";
+      resultFolder.textContent = folderName || preview.folderName || "-";
+      resultTemplate.textContent = runResult.templateName || preview.templateName || "-";
+      resultCount.textContent = String(runResult.count ?? preview.claims?.length ?? "-");
+      resultCode.textContent = String(result.code ?? "-");
+
+      if (!result.ok && error.message) {
+        resultEmpty.textContent = error.message;
+      } else if (isDryRun) {
+        resultEmpty.textContent = "Dry run completed. Final submission screenshot is only created after a live run.";
+      } else {
+        resultEmpty.textContent = "No final screenshot is available for this run.";
+      }
+
+      resultImage.hidden = true;
+      resultImage.removeAttribute("src");
+      resultEmpty.hidden = false;
+      if (imageUrl) {
+        resultImage.onload = () => {
+          resultImage.hidden = false;
+          resultEmpty.hidden = true;
+        };
+        resultImage.onerror = () => {
+          resultImage.hidden = true;
+          resultEmpty.hidden = false;
+        };
+        resultImage.src = imageUrl;
+      }
+
+      resultOverlay.setAttribute("aria-hidden", "false");
+      resultDone.focus();
+    }
+
+    function hideResultAlert() {
+      resultOverlay.classList.remove("is-failed");
+      resultOverlay.setAttribute("aria-hidden", "true");
+      submitButton.focus();
+    }
+
+    function setRunning(next) {
+      running = next;
+      submitButton.disabled = next;
+      cancelButton.disabled = !next;
+      email.disabled = next;
+      password.disabled = next;
+      folder.disabled = next;
+      headful.disabled = next;
+      forceLogin.disabled = next;
+      dryRun.disabled = next;
+    }
+
+    function updatePreview() {
+      commandPreview.textContent = argsPreview();
+    }
+
+    async function loadFolders() {
+      if (!window.autoClaimListFolders) {
+        folder.innerHTML = '<option value="">請用「Start.command」開啟</option>';
+        setStatus("HTML_DIRECT_OPEN_BLOCKED", "warn");
+        subline.textContent = "browser sandbox: execution bridge missing";
+        submitButton.disabled = true;
+        appendLog("[warn] Browser 直接開 HTML 不能執行 npm，請點擊「Start.command」。", "warn");
+        return;
+      }
+
+      const folders = await window.autoClaimListFolders();
+      folder.innerHTML = "";
+      for (const name of folders) {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        folder.appendChild(option);
+      }
+      if (!folders.length) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "No folders found";
+        folder.appendChild(option);
+      } else {
+        const current = currentPeriodFolder();
+        if (folders.includes(current)) {
+          folder.value = current;
+        }
+      }
+      setStatus("READY", "ok");
+      subline.textContent = "bridge://playwright-local";
+      updatePreview();
+    }
+
+    function currentPeriodFolder() {
+      const now = new Date();
+      return `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    window.addEventListener("auto-claim-event", (event) => {
+      const { type, payload } = event.detail || {};
+      if (type === "stdout") appendLog(payload, "");
+      if (type === "stderr") appendLog(payload, "warn");
+      if (type === "status") setStatus(payload.text, payload.tone || "");
+    });
+
+    form.addEventListener("input", updatePreview);
+    folder.addEventListener("change", updatePreview);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (running) return;
+
+      const folderName = selectedFolder();
+      if (!folderName) {
+        setStatus("FOLDER_REQUIRED", "err");
+        return;
+      }
+
+      if (!window.autoClaimRun) {
+        setStatus("EXECUTION_BRIDGE_MISSING", "err");
+        return;
+      }
+
+      setRunning(true);
+      resetLog("");
+      appendLog(`[ui] ${argsPreview()}`, "ok");
+      setStatus("RUNNING", "warn");
+
+      try {
+        const result = await window.autoClaimRun({
+          email: email.value.trim(),
+          password: password.value,
+          folderName,
+          dryRun: dryRun.checked,
+          headful: headful.checked,
+          forceLogin: forceLogin.checked
+        });
+
+        if (result.ok) {
+          appendLog(`[system] completed with exit code ${result.code}`, "ok");
+          setStatus("COMPLETED", "ok");
+          showResultAlert(result, folderName);
+        } else {
+          appendLog(`[system] failed with exit code ${result.code}`, "err");
+          setStatus("FAILED", "err");
+          showResultAlert(result, folderName);
+        }
+      } catch (error) {
+        appendLog(`[system] ${error && error.message ? error.message : String(error)}`, "err");
+        setStatus("FAILED", "err");
+        showResultAlert({
+          ok: false,
+          code: 1,
+          artifacts: {
+            error: {
+              message: error && error.message ? error.message : String(error)
+            }
+          }
+        }, folderName);
+      } finally {
+        setRunning(false);
+      }
+    });
+
+    cancelButton.addEventListener("click", async () => {
+      if (!window.autoClaimCancel) return;
+      cancelButton.disabled = true;
+      await window.autoClaimCancel();
+      appendLog("[ui] cancellation requested", "warn");
+    });
+
+    resultClose.addEventListener("click", hideResultAlert);
+    resultDone.addEventListener("click", hideResultAlert);
+    resultOverlay.addEventListener("click", (event) => {
+      if (event.target === resultOverlay) hideResultAlert();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && resultOverlay.getAttribute("aria-hidden") === "false") {
+        hideResultAlert();
+      }
+    });
+
+    updatePreview();
+    loadFolders().catch((error) => {
+      appendLog(`[system] ${error && error.message ? error.message : String(error)}`, "err");
+      setStatus("INIT_FAILED", "err");
+    });
+  </script>
+</body>
+</html>

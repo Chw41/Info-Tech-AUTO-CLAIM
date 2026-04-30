@@ -1,0 +1,13 @@
+{
+  "name": "auto-infotech",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "auto-claim": "node src/auto-claim-upload.js",
+    "auto-claim:dry-run": "node src/auto-claim-upload.js --dry-run"
+  },
+  "dependencies": {
+    "playwright": "^1.53.0"
+  }
+}
