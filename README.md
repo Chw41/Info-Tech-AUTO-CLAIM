@@ -92,7 +92,7 @@ Windows users can double-click `WINDOWS-Start.cmd`.
 
 If you prefer the command line:
 
-```powershelle
+```powershell
 cd .\Info-Tech-AUTO-CLAIM
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 Copy-Item .\.env.example .\.env
